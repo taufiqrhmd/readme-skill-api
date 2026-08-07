@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { Hexagon, Circle, Square, Copy, Check, Code2, Plus } from 'lucide-react';
 
 const POPULAR_SKILLS = [
-  'react', 'nodedotjs', 'vuedotjs', 'javascript', 'typescript', 'html5', 'css',
-  'python', 'cplusplus', 'go', 'rust', 'docker', 'kubernetes', 'laravel', 'androidstudio',
-  'googlecloud', 'vercel', 'nextdotjs', 'tailwindcss', 'figma',
+  'react', 'nodejs', 'vue', 'javascript', 'typescript', 'html5', 'css',
+  'python', 'cplusplus', 'go', 'rust', 'docker', 'kubernetes', 'laravel', 'android',
+  'google-cloud', 'vercel', 'nextjs', 'tailwindcss', 'figma',
   'git', 'github', 'postgresql', 'mongodb', 'mysql', 'redis', 'linux', 'php',
   'solidity', 'kotlin', 'swift', 'dart', 'flutter', 'ruby', 'elixir', 
   'scala', 'svelte', 'astro', 'nuxt'
@@ -15,7 +15,7 @@ const POPULAR_SKILLS = [
 type FrameType = 'hexagon' | 'circle' | 'rounded';
 
 export default function Home() {
-  const [selectedIcons, setSelectedIcons] = useState<string[]>(['react', 'nodedotjs', 'typescript', 'tailwindcss']);
+  const [selectedIcons, setSelectedIcons] = useState<string[]>(['react', 'nodejs', 'typescript', 'tailwindcss']);
   const [frame, setFrame] = useState<FrameType>('hexagon');
   const [theme, setTheme] = useState('light');
   const [copied, setCopied] = useState(false);
@@ -23,7 +23,10 @@ export default function Home() {
   const [itemSize, setItemSize] = useState(48);
   const [iconSize, setIconSize] = useState(30);
   const [perLine, setPerLine] = useState(10);
-  const filteredSkills = POPULAR_SKILLS.filter(s => s.includes(searchTerm.toLowerCase()) && !selectedIcons.includes(s));
+  const filteredSkills = POPULAR_SKILLS.filter(skill => 
+    skill.toLowerCase().includes(searchTerm.toLowerCase()) && 
+    !selectedIcons.includes(skill)
+  );
 
   const toggleIcon = (slug: string) => {
     if (selectedIcons.includes(slug)) {
@@ -33,7 +36,7 @@ export default function Home() {
     }
   };
 
-  const svgUrl = `/api/skills?icons=${selectedIcons.join(',')}&frame=${frame}&theme=${theme}&itemSize=${itemSize}&iconSize=${iconSize}&perLine=${perLine}`;
+  const svgUrl = `/api/skills?icons=${selectedIcons.join(',')}&frame=${frame}&theme=${theme}&itemSize=${itemSize}&iconSize=${iconSize}&perLine=${perLine}&v=1`;
   const markdownCode = `![Tech Stack](${typeof window !== 'undefined' ? window.location.origin : ''}${svgUrl})`;
 
   const themeColors: Record<string, string> = {
