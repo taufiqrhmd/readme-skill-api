@@ -29,7 +29,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const iconsParam = searchParams.get('icons') || '';
   const frame = (searchParams.get('frame') || 'rounded') as FrameType;
-  const theme = searchParams.get('theme') || 'light';
+  const theme = searchParams.get('theme') || 'dark';
 
   if (!iconsParam) {
     return new NextResponse('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="100"><text x="10" y="40">Please provide icons parameter</text></svg>', {
@@ -49,19 +49,24 @@ export async function GET(request: Request) {
   const numCols = Math.min(iconSlugs.length, maxPerRow);
   const numRows = Math.ceil(iconSlugs.length / maxPerRow);
 
-  const width = numCols * itemSize + (numCols - 1) * gap;
-  const height = numRows * itemSize + (numRows - 1) * gap;
+  let width = numCols * itemSize + (numCols - 1) * gap;
+  let height = numRows * itemSize + (numRows - 1) * gap;
+
+  if (frame === 'hexagon') {
+    // Honeycomb pattern adds horizontal offset for alternate rows
+    width = numCols * itemSize + (numCols - 1) * gap + (numRows > 1 ? (itemSize + gap) / 2 : 0);
+    height = itemSize + (numRows - 1) * ((itemSize * 0.75) + gap);
+  }
 
   // Theme definitions
   const themes: Record<string, { bg: string, border: string, isDark: boolean }> = {
-    light: { bg: '#ffffff', border: '#e2e8f0', isDark: false },
     dark: { bg: '#0f172a', border: '#334155', isDark: true },
     tokyonight: { bg: '#1a1b26', border: '#414868', isDark: true },
     dracula: { bg: '#282a36', border: '#44475a', isDark: true },
     monokai: { bg: '#272822', border: '#3e3d32', isDark: true }
   };
 
-  const currentTheme = themes[theme] || themes.light;
+  const currentTheme = themes[theme] || themes.dark;
 
   const getLuminance = (hex: string) => {
     const r = parseInt(hex.slice(0, 2), 16) / 255;
@@ -91,8 +96,14 @@ export async function GET(request: Request) {
     const col = index % maxPerRow;
     const row = Math.floor(index / maxPerRow);
 
-    const x = col * (itemSize + gap);
-    const y = row * (itemSize + gap);
+    let x = col * (itemSize + gap);
+    let y = row * (itemSize + gap);
+
+    if (frame === 'hexagon') {
+      const rowOffset = (row % 2 === 1) ? (itemSize + gap) / 2 : 0;
+      x = col * (itemSize + gap) + rowOffset;
+      y = row * ((itemSize * 0.75) + gap);
+    }
 
     let hexColor = icon.hex ? `#${icon.hex}` : '#000000';
 

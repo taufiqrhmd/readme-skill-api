@@ -7,8 +7,8 @@ const POPULAR_SKILLS = [
   'react', 'nodejs', 'vue', 'javascript', 'typescript', 'html5', 'css',
   'python', 'cplusplus', 'go', 'rust', 'docker', 'kubernetes', 'laravel', 'android',
   'google-cloud', 'vercel', 'nextjs', 'tailwindcss', 'figma',
-  'git', 'github', 'postgresql', 'mongodb', 'mysql', 'redis', 'linux', 'php',
-  'solidity', 'kotlin', 'swift', 'dart', 'flutter', 'ruby', 'elixir', 
+  'git', 'github', 'postgresql', 'mongodb', 'mysql', 'redis', 'linux', 'php', 
+  'kotlin', 'swift', 'dart', 'flutter', 'ruby', 'elixir', 
   'scala', 'svelte', 'astro', 'nuxt'
 ];
 
@@ -17,12 +17,13 @@ type FrameType = 'hexagon' | 'circle' | 'rounded';
 export default function Home() {
   const [selectedIcons, setSelectedIcons] = useState<string[]>(['react', 'nodejs', 'typescript', 'tailwindcss']);
   const [frame, setFrame] = useState<FrameType>('hexagon');
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark');
   const [copied, setCopied] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [itemSize, setItemSize] = useState(48);
   const [iconSize, setIconSize] = useState(30);
   const [perLine, setPerLine] = useState(10);
+
   const filteredSkills = POPULAR_SKILLS.filter(skill => 
     skill.toLowerCase().includes(searchTerm.toLowerCase()) && 
     !selectedIcons.includes(skill)
@@ -40,7 +41,6 @@ export default function Home() {
   const markdownCode = `![Tech Stack](${typeof window !== 'undefined' ? window.location.origin : ''}${svgUrl})`;
 
   const themeColors: Record<string, string> = {
-    light: '#ffffff',
     dark: '#0f172a',
     tokyonight: '#1a1b26',
     dracula: '#282a36',
@@ -54,7 +54,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen p-8 md:p-24 max-w-6xl mx-auto space-y-16">
+    <div className="w-full min-h-screen p-8 md:p-24 max-w-[90rem] mx-auto space-y-16">
       <header className="text-center space-y-4">
         <div className="inline-flex items-center justify-center p-3 bg-brand-500/10 rounded-2xl mb-4">
           <Code2 className="w-8 h-8 text-brand-500" />
@@ -67,9 +67,9 @@ export default function Home() {
         </p>
       </header>
 
-      <div className="grid md:grid-cols-2 gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-12">
         {/* Controls */}
-        <div className="space-y-8 p-6 bg-bg-surface border border-border rounded-3xl shadow-xl">
+        <div className="w-full space-y-8 p-6 bg-bg-surface border border-border rounded-3xl shadow-xl overflow-hidden">
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">1. Choose Frame</h2>
             <div className="grid grid-cols-3 gap-4">
@@ -104,7 +104,6 @@ export default function Home() {
               onChange={(e) => setTheme(e.target.value)}
               className="w-full bg-bg-base border border-border rounded-xl px-4 py-3 focus:outline-none focus:border-brand-500 transition-colors appearance-none"
             >
-              <option value="light">Light</option>
               <option value="dark">Dark</option>
               <option value="tokyonight">Tokyo Night</option>
               <option value="dracula">Dracula</option>
@@ -164,7 +163,7 @@ export default function Home() {
 
             <div className="pt-4 border-t border-border">
               <p className="text-sm text-text-secondary mb-3">Popular choices:</p>
-              <div className="flex flex-wrap gap-2 h-48 overflow-y-auto pr-2 pb-2 content-start">
+              <div className="flex flex-wrap gap-2 h-48 overflow-y-scroll pr-2 pb-2 content-start">
                 {filteredSkills.length > 0 ? (
                   filteredSkills.map(slug => (
                     <button
@@ -187,8 +186,8 @@ export default function Home() {
         </div>
 
         {/* Preview */}
-        <div className="space-y-8">
-          <div className="p-6 bg-bg-surface border border-border rounded-3xl shadow-xl space-y-6 sticky top-8">
+        <div className="w-full space-y-8 overflow-hidden">
+          <div className="p-6 bg-bg-surface border border-border rounded-3xl shadow-xl space-y-6 sticky top-8 overflow-hidden">
             <h2 className="text-xl font-semibold flex items-center justify-between">
               Preview
               <span className="text-xs font-normal text-text-secondary px-2 py-1 bg-bg-base rounded-md border border-border">Live</span>
