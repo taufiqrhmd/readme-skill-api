@@ -1,18 +1,19 @@
 'use client';
 
-import { useState } from 'react';
-import { Hexagon, Circle, Square, Copy, Check, Code2, Plus } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Hexagon, Circle, Square, Copy, Check, Code2, Plus, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
 
 const POPULAR_SKILLS = [
   'react', 'nodejs', 'vue', 'javascript', 'typescript', 'html5', 'css',
   'python', 'cplusplus', 'go', 'rust', 'docker', 'kubernetes', 'laravel', 'android',
   'google-cloud', 'vercel', 'nextjs', 'tailwindcss', 'figma',
-  'git', 'github', 'postgresql', 'mongodb', 'mysql', 'redis', 'linux', 'php', 
-  'kotlin', 'swift', 'dart', 'flutter', 'ruby', 'elixir', 
+  'git', 'github', 'postgresql', 'mongodb', 'mysql', 'redis', 'linux', 'php',
+  'kotlin', 'swift', 'dart', 'flutter', 'ruby', 'elixir',
   'scala', 'svelte', 'astro', 'nuxt'
 ];
 
 type FrameType = 'hexagon' | 'circle' | 'rounded';
+type AlignmentType = 'left' | 'center' | 'right';
 
 export default function Home() {
   const [selectedIcons, setSelectedIcons] = useState<string[]>(['react', 'nodejs', 'typescript', 'tailwindcss']);
@@ -23,9 +24,10 @@ export default function Home() {
   const [itemSize, setItemSize] = useState(48);
   const [iconSize, setIconSize] = useState(30);
   const [perLine, setPerLine] = useState(10);
+  const [alignment, setAlignment] = useState<AlignmentType>('left');
 
-  const filteredSkills = POPULAR_SKILLS.filter(skill => 
-    skill.toLowerCase().includes(searchTerm.toLowerCase()) && 
+  const filteredSkills = POPULAR_SKILLS.filter(skill =>
+    skill.toLowerCase().includes(searchTerm.toLowerCase()) &&
     !selectedIcons.includes(skill)
   );
 
@@ -37,8 +39,27 @@ export default function Home() {
     }
   };
 
+  // 1. Berikan tipe HTMLTextAreaElement pada useRef agar TypeScript mengenali properti style & scrollHeight
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // 2. Pindahkan deklarasi markdownCode ke SINI (SEBELUM useEffect)
   const svgUrl = `/api/skills?icons=${selectedIcons.join(',')}&frame=${frame}&theme=${theme}&itemSize=${itemSize}&iconSize=${iconSize}&perLine=${perLine}&v=1`;
-  const markdownCode = `![Tech Stack](${typeof window !== 'undefined' ? window.location.origin : ''}${svgUrl})`;
+  const absoluteUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${svgUrl}`;
+
+  let markdownCode = `![Tech Stack](${absoluteUrl})`;
+  if (alignment === 'center') {
+    markdownCode = `<div align="center">\n  <img src="${absoluteUrl}" alt="Tech Stack" />\n</div>`;
+  } else if (alignment === 'right') {
+    markdownCode = `<div align="right">\n  <img src="${absoluteUrl}" alt="Tech Stack" />\n</div>`;
+  }
+
+  // 3. Sekarang useEffect bisa digunakan dengan aman karena markdownCode sudah dibuat di atasnya
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [markdownCode]);
 
   const themeColors: Record<string, string> = {
     dark: '#0f172a',
@@ -111,8 +132,35 @@ export default function Home() {
             </select>
           </div>
 
+          <div className="pt-4 border-t border-border">
+            <h2 className="text-xl font-semibold mb-4">3. Output Alignment</h2>
+            <div className="grid grid-cols-3 gap-4">
+              <button
+                onClick={() => setAlignment('left')}
+                className={`p-4 rounded-xl border flex flex-col items-center gap-2 transition-all ${alignment === 'left' ? 'bg-brand-500/20 border-brand-500 text-brand-100' : 'border-border hover:bg-bg-surface-hover text-text-secondary'}`}
+              >
+                <AlignLeft className="w-5 h-5" />
+                <span className="text-sm font-medium">Left (Default)</span>
+              </button>
+              <button
+                onClick={() => setAlignment('center')}
+                className={`p-4 rounded-xl border flex flex-col items-center gap-2 transition-all ${alignment === 'center' ? 'bg-brand-500/20 border-brand-500 text-brand-100' : 'border-border hover:bg-bg-surface-hover text-text-secondary'}`}
+              >
+                <AlignCenter className="w-5 h-5" />
+                <span className="text-sm font-medium">Center</span>
+              </button>
+              <button
+                onClick={() => setAlignment('right')}
+                className={`p-4 rounded-xl border flex flex-col items-center gap-2 transition-all ${alignment === 'right' ? 'bg-brand-500/20 border-brand-500 text-brand-100' : 'border-border hover:bg-bg-surface-hover text-text-secondary'}`}
+              >
+                <AlignRight className="w-5 h-5" />
+                <span className="text-sm font-medium">Right</span>
+              </button>
+            </div>
+          </div>
+
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold">3. Adjust Sizes</h2>
+            <h2 className="text-xl font-semibold">4. Adjust Sizes</h2>
             <div className="space-y-4 bg-bg-base border border-border p-4 rounded-xl">
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
@@ -139,7 +187,7 @@ export default function Home() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold">4. Select Skills</h2>
+            <h2 className="text-xl font-semibold">5. Select Skills</h2>
             <input
               type="text"
               placeholder="Search skills (e.g. react, python)..."
@@ -182,11 +230,12 @@ export default function Home() {
                 )}
               </div>
             </div>
+
           </div>
         </div>
 
         {/* Preview */}
-        <div className="w-full space-y-8 overflow-hidden">
+        <div className="w-full space-y-8">
           <div className="p-6 bg-bg-surface border border-border rounded-3xl shadow-xl space-y-6 sticky top-8 overflow-hidden">
             <h2 className="text-xl font-semibold flex items-center justify-between">
               Preview
@@ -202,13 +251,16 @@ export default function Home() {
             </div>
 
             <div className="space-y-3">
-              <label className="text-sm font-medium text-text-secondary block">Markdown for README.md</label>
+              <label className="text-sm font-medium text-text-secondary block">
+                {alignment === 'left' ? 'Markdown for README.md' : 'HTML for README.md'}
+              </label>
               <div className="flex relative">
-                <input
-                  type="text"
+                <textarea
+                  ref={textareaRef}
                   readOnly
                   value={markdownCode}
-                  className="w-full bg-bg-base border border-border rounded-xl pl-4 pr-12 py-3 text-sm font-mono text-text-secondary focus:outline-none"
+                  className="w-full bg-bg-base border border-border rounded-xl pl-4 pr-12 py-3 text-sm font-mono text-text-secondary focus:outline-none resize-none overflow-hidden"
+                  rows={1}
                 />
                 <button
                   onClick={copyToClipboard}
