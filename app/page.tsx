@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { Hexagon, Circle, Square, Copy, Check, Code2, Plus, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
 
 const POPULAR_SKILLS = [
@@ -77,8 +78,8 @@ export default function Home() {
   return (
     <div className="w-full min-h-screen p-8 md:p-24 max-w-[90rem] mx-auto space-y-16">
       <header className="text-center space-y-4">
-        <div className="inline-flex items-center justify-center p-3 bg-brand-500/10 rounded-2xl mb-4">
-          <Code2 className="w-8 h-8 text-brand-500" />
+        <div className="inline-flex items-center justify-center p-3 rounded-2xl mb-4">
+          <Image src="/logo.png" alt="Tech Stack Badge Generator Logo" width={120} height={120} className="rounded-md" />
         </div>
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
           Tech Stack <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-brand-100">Badge Generator</span>

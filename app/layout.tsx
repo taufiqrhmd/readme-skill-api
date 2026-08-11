@@ -33,11 +33,25 @@ export const metadata: Metadata = {
     title: "Tech Stack Badge Generator",
     description: "Create beautiful, dynamic SVG tech stack badges for your GitHub README.",
     siteName: "Tech Stack Badge Generator",
+    url: "https://readme-skill-api.vercel.app/",
+    images: [
+      {
+        url: "/image.png",
+        width: 1200,
+        height: 630,
+        alt: "Tech Stack Badge Generator",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Tech Stack Badge Generator",
     description: "Create beautiful, dynamic SVG tech stack badges for your GitHub README.",
+    images: ["/image.png"],
+  },
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
   },
   robots: {
     index: true,
