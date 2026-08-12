@@ -2,15 +2,15 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { Hexagon, Circle, Square, Copy, Check, Code2, Plus, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
+import { Hexagon, Circle, Square, Copy, Check, Plus, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
 
 const POPULAR_SKILLS = [
   'react', 'nodejs', 'vue', 'javascript', 'typescript', 'html5', 'css',
   'python', 'cplusplus', 'go', 'rust', 'docker', 'kubernetes', 'laravel', 'android',
   'google-cloud', 'vercel', 'nextjs', 'tailwindcss', 'figma',
   'git', 'github', 'postgresql', 'mongodb', 'mysql', 'redis', 'linux', 'php',
-  'kotlin', 'swift', 'dart', 'flutter', 'ruby', 'elixir',
-  'scala', 'svelte', 'astro', 'nuxt'
+  'kotlin', 'swift', 'dart', 'flutter', 'ruby', 'elixir', 'nginx',
+  'scala', 'svelte', 'astro', 'nuxt', 'supabase', 'discord'
 ];
 
 type FrameType = 'hexagon' | 'circle' | 'rounded';
