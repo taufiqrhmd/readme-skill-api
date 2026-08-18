@@ -13,12 +13,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tech Stack Badge Generator | Create Beautiful GitHub README Badges",
-  description: "Generate beautiful, dynamic SVG tech stack badges for your GitHub README profile. Choose from various frames like hexagons and circles, select your skills, and customize themes.",
+  title: "GitHub README Asset Generator | Badges & Streaks",
+  description: "Create beautiful, dynamic SVG tech stack badges and contribution streaks for your GitHub README profile. Customize themes, borders, and layouts instantly.",
   keywords: [
     "github readme", 
     "tech stack", 
     "badge generator", 
+    "github streaks",
+    "contribution streaks",
+    "github stats",
     "svg badges", 
     "developer profile", 
     "github profile", 
@@ -30,21 +33,21 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "Tech Stack Badge Generator",
-    description: "Create beautiful, dynamic SVG tech stack badges for your GitHub README.",
-    siteName: "Tech Stack Badge Generator",
+    title: "GitHub README Asset Generator | Badges & Streaks",
+    description: "Create beautiful, dynamic SVG tech stack badges and contribution streaks for your GitHub README profile.",
+    siteName: "GitHub README Asset Generator",
     url: "https://readme-skill-api.vercel.app/",
     images: [
       {
         url: "/image.png",
-        alt: "Tech Stack Badge Generator",
+        alt: "GitHub README Asset Generator",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tech Stack Badge Generator",
-    description: "Create beautiful, dynamic SVG tech stack badges for your GitHub README.",
+    title: "GitHub README Asset Generator | Badges & Streaks",
+    description: "Create beautiful, dynamic SVG tech stack badges and contribution streaks for your GitHub README profile.",
     images: ["/image.png"],
   },
   icons: {
