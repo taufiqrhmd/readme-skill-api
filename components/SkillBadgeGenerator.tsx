@@ -19,8 +19,8 @@ export default function SkillBadgeGenerator() {
   const [selectedIcons, setSelectedIcons] = useState<string[]>(['react', 'nodejs', 'typescript', 'tailwindcss']);
   const [frame, setFrame] = useState<FrameType>('hexagon');
   const [theme, setTheme] = useState('dark');
-  const [copied, setCopied] = useState(false);
-  const [codeFormat, setCodeFormat] = useState<'markdown' | 'html'>('markdown');
+  const [copiedMd, setCopiedMd] = useState(false);
+  const [copiedHtml, setCopiedHtml] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [itemSize, setItemSize] = useState(48);
   const [iconSize, setIconSize] = useState(30);
@@ -40,7 +40,8 @@ export default function SkillBadgeGenerator() {
     }
   };
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const mdRef = useRef<HTMLTextAreaElement>(null);
+  const htmlRef = useRef<HTMLTextAreaElement>(null);
 
   const svgUrl = `/api/skills?icons=${selectedIcons.join(',')}&frame=${frame}&theme=${theme}&itemSize=${itemSize}&iconSize=${iconSize}&perLine=${perLine}&v=1`;
   const absoluteUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${svgUrl}`;
@@ -56,19 +57,27 @@ export default function SkillBadgeGenerator() {
     htmlCode = `<div align="right">\n  <a href="#">\n    <img src="${absoluteUrl}" alt="Tech Stack" />\n  </a>\n</div>`;
   }
 
-  const codeToCopy = codeFormat === 'markdown' ? markdownCode : htmlCode;
-
   useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    if (mdRef.current) {
+      mdRef.current.style.height = 'auto';
+      mdRef.current.style.height = `${mdRef.current.scrollHeight}px`;
     }
-  }, [codeToCopy]);
+    if (htmlRef.current) {
+      htmlRef.current.style.height = 'auto';
+      htmlRef.current.style.height = `${htmlRef.current.scrollHeight}px`;
+    }
+  }, [markdownCode, htmlCode]);
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(codeToCopy);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const copyMd = () => {
+    navigator.clipboard.writeText(markdownCode);
+    setCopiedMd(true);
+    setTimeout(() => setCopiedMd(false), 2000);
+  };
+
+  const copyHtml = () => {
+    navigator.clipboard.writeText(htmlCode);
+    setCopiedHtml(true);
+    setTimeout(() => setCopiedHtml(false), 2000);
   };
 
   return (
@@ -234,41 +243,49 @@ export default function SkillBadgeGenerator() {
             )}
           </div>
 
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
+          <div className="space-y-4">
+            <div className="space-y-2">
               <label className="text-sm font-medium text-text-secondary block">
-                Code for README.md
+                Markdown
               </label>
-              <div className="flex bg-bg-base border border-border rounded-lg p-1">
+              <div className="flex relative">
+                <textarea
+                  ref={mdRef}
+                  readOnly
+                  value={markdownCode}
+                  className="w-full bg-bg-base border border-border rounded-xl pl-4 pr-12 py-3 text-sm font-mono text-text-secondary focus:outline-none resize-none overflow-hidden"
+                  rows={1}
+                />
                 <button
-                  onClick={() => setCodeFormat('markdown')}
-                  className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${codeFormat === 'markdown' ? 'bg-brand-500 text-white' : 'text-text-secondary hover:text-text-primary'}`}
+                  onClick={copyMd}
+                  className="absolute right-2 top-2 p-2 rounded-lg bg-bg-surface hover:bg-brand-500 hover:text-white transition-colors text-text-secondary"
+                  title="Copy Markdown"
                 >
-                  Markdown
-                </button>
-                <button
-                  onClick={() => setCodeFormat('html')}
-                  className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${codeFormat === 'html' ? 'bg-brand-500 text-white' : 'text-text-secondary hover:text-text-primary'}`}
-                >
-                  HTML
+                  {copiedMd ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                 </button>
               </div>
             </div>
-            <div className="flex relative">
-              <textarea
-                ref={textareaRef}
-                readOnly
-                value={codeToCopy}
-                className="w-full bg-bg-base border border-border rounded-xl pl-4 pr-12 py-3 text-sm font-mono text-text-secondary focus:outline-none resize-none overflow-hidden"
-                rows={1}
-              />
-              <button
-                onClick={copyToClipboard}
-                className="absolute right-2 top-2 p-2 rounded-lg bg-bg-surface hover:bg-brand-500 hover:text-white transition-colors text-text-secondary"
-                title="Copy Code"
-              >
-                {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-              </button>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-text-secondary block">
+                HTML
+              </label>
+              <div className="flex relative">
+                <textarea
+                  ref={htmlRef}
+                  readOnly
+                  value={htmlCode}
+                  className="w-full bg-bg-base border border-border rounded-xl pl-4 pr-12 py-3 text-sm font-mono text-text-secondary focus:outline-none resize-none overflow-hidden"
+                  rows={1}
+                />
+                <button
+                  onClick={copyHtml}
+                  className="absolute right-2 top-2 p-2 rounded-lg bg-bg-surface hover:bg-brand-500 hover:text-white transition-colors text-text-secondary"
+                  title="Copy HTML"
+                >
+                  {copiedHtml ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
           </div>
         </div>
