@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Copy, Check, Activity } from 'lucide-react';
+import ThemeSelector from '@/components/ThemeSelector';
 
 export default function StreakGenerator() {
   const [streakUser, setStreakUser] = useState('torvalds');
@@ -9,14 +10,19 @@ export default function StreakGenerator() {
   const [showBorder, setShowBorder] = useState(true);
   const [copiedMd, setCopiedMd] = useState(false);
   const [copiedHtml, setCopiedHtml] = useState(false);
+  const [copiedDual, setCopiedDual] = useState(false);
   const mdRef = useRef<HTMLTextAreaElement>(null);
   const htmlRef = useRef<HTMLTextAreaElement>(null);
 
-  const streakSvgUrl = `/api/streaks?user=${streakUser}&theme=${theme}&hide_border=${!showBorder}&v=3`;
+  const streakSvgUrl = `/api/streaks?user=${encodeURIComponent(streakUser)}&theme=${theme}&hide_border=${!showBorder}&v=3`;
   const streakAbsoluteUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${streakSvgUrl}`;
+
+  const darkUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/streaks?user=${encodeURIComponent(streakUser)}&theme=dark&hide_border=${!showBorder}`;
+  const lightUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/streaks?user=${encodeURIComponent(streakUser)}&theme=default&hide_border=${!showBorder}`;
 
   const markdownCode = `![${streakUser}'s GitHub Streaks](${streakAbsoluteUrl})`;
   const htmlCode = `<a href="https://github.com/${streakUser}">\n  <img src="${streakAbsoluteUrl}" alt="${streakUser}'s GitHub Streaks" />\n</a>`;
+  const dualThemeCode = `<picture>\n  <source media="(prefers-color-scheme: dark)" srcset="${darkUrl}" />\n  <source media="(prefers-color-scheme: light)" srcset="${lightUrl}" />\n  <img src="${darkUrl}" alt="${streakUser}'s GitHub Streaks" />\n</picture>`;
 
   useEffect(() => {
     if (mdRef.current) {
@@ -41,6 +47,12 @@ export default function StreakGenerator() {
     setTimeout(() => setCopiedHtml(false), 2000);
   };
 
+  const copyDual = () => {
+    navigator.clipboard.writeText(dualThemeCode);
+    setCopiedDual(true);
+    setTimeout(() => setCopiedDual(false), 2000);
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Controls */}
@@ -60,28 +72,13 @@ export default function StreakGenerator() {
           <h2 className="text-xl font-semibold">2. Configuration</h2>
           
           <div className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-text-secondary">Theme</label>
-              <select
-                value={theme}
-                onChange={(e) => setTheme(e.target.value)}
-                className="w-full bg-bg-base border border-border rounded-xl px-4 py-3 focus:outline-none focus:border-brand-500 transition-colors"
-              >
-                <option value="default">Default</option>
-                <option value="dark">Dark</option>
-                <option value="transparent">Transparent</option>
-                <option value="radical">Radical</option>
-                <option value="tokyonight">Tokyo Night</option>
-                <option value="dracula">Dracula</option>
-                <option value="monokai">Monokai</option>
-              </select>
-            </div>
+            <ThemeSelector value={theme} onChange={setTheme} />
 
-            <div className="flex items-center justify-between pt-2">
+            <div className="flex items-center justify-between p-3 bg-bg-base border border-border rounded-xl">
               <label className="text-sm font-medium text-text-primary">Show Border</label>
               <button
                 onClick={() => setShowBorder(!showBorder)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${showBorder ? 'bg-brand-500' : 'bg-bg-base border border-border'}`}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${showBorder ? 'bg-brand-500' : 'bg-bg-surface border border-border'}`}
               >
                 <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showBorder ? 'translate-x-6' : 'translate-x-1'}`} />
               </button>
@@ -89,11 +86,13 @@ export default function StreakGenerator() {
           </div>
         </div>
 
-        <div className="p-4 bg-brand-500/10 border border-brand-500/20 rounded-xl text-brand-100 text-sm mt-8">
-          <p className="font-medium mb-1 flex items-center gap-2">
-            <Activity className="w-4 h-4" /> Note about Rate Limits:
+        <div className="p-4 bg-brand-500/10 border border-brand-500/20 rounded-xl text-brand-100 text-sm mt-8 space-y-2">
+          <p className="font-medium flex items-center gap-2">
+            <Activity className="w-4 h-4" /> Note about Rate Limits & Private Repos:
           </p>
-          <p className="opacity-80">This generator uses the GitHub GraphQL API which has a rate limit of 5,000 requests per hour per token. Results are cached for 2 hours to prevent hitting limits.</p>
+          <p className="opacity-80">
+            Results are cached for 2 hours. Private contributions are automatically included if enabled in your GitHub profile settings.
+          </p>
         </div>
       </div>
 
@@ -156,6 +155,16 @@ export default function StreakGenerator() {
                   {copiedHtml ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                 </button>
               </div>
+            </div>
+
+            <div className="pt-2">
+              <button
+                onClick={copyDual}
+                className="w-full py-2.5 px-4 bg-bg-base border border-border rounded-xl text-sm font-medium text-text-secondary hover:text-text-primary hover:border-brand-500 flex items-center justify-center gap-2 transition-colors"
+              >
+                {copiedDual ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                Copy Dual-Theme Tag (Auto Dark/Light for GitHub)
+              </button>
             </div>
           </div>
         </div>

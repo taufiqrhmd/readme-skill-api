@@ -60,10 +60,13 @@ export async function GET(request: Request) {
 
   // Theme definitions
   const themes: Record<string, { bg: string, border: string, isDark: boolean }> = {
-    dark: { bg: '#0f172a', border: '#334155', isDark: true },
-    tokyonight: { bg: '#1a1b26', border: '#414868', isDark: true },
-    dracula: { bg: '#282a36', border: '#44475a', isDark: true },
-    monokai: { bg: '#272822', border: '#3e3d32', isDark: true }
+    dark: { bg: '#151515', border: '#333333', isDark: true },
+    default: { bg: '#FFFEFE', border: '#E4E2E2', isDark: false },
+    transparent: { bg: 'none', border: '#444444', isDark: true },
+    radical: { bg: '#141321', border: '#2A283E', isDark: true },
+    tokyonight: { bg: '#1A1B27', border: '#414868', isDark: true },
+    dracula: { bg: '#282A36', border: '#44475A', isDark: true },
+    monokai: { bg: '#272822', border: '#3E3D32', isDark: true }
   };
 
   const currentTheme = themes[theme] || themes.dark;

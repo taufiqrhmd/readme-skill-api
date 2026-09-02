@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Hexagon, Circle, Square, Copy, Check, Plus, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
+import ThemeSelector from '@/components/ThemeSelector';
 
 const POPULAR_SKILLS = [
   'react', 'nodejs', 'vue', 'javascript', 'typescript', 'html5', 'css',
@@ -18,7 +19,7 @@ type AlignmentType = 'left' | 'center' | 'right';
 export default function SkillBadgeGenerator() {
   const [selectedIcons, setSelectedIcons] = useState<string[]>(['react', 'nodejs', 'typescript', 'tailwindcss']);
   const [frame, setFrame] = useState<FrameType>('hexagon');
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState('default');
   const [copiedMd, setCopiedMd] = useState(false);
   const [copiedHtml, setCopiedHtml] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -43,7 +44,7 @@ export default function SkillBadgeGenerator() {
   const mdRef = useRef<HTMLTextAreaElement>(null);
   const htmlRef = useRef<HTMLTextAreaElement>(null);
 
-  const svgUrl = `/api/skills?icons=${selectedIcons.join(',')}&frame=${frame}&theme=${theme}&itemSize=${itemSize}&iconSize=${iconSize}&perLine=${perLine}&v=1`;
+  const svgUrl = `/api/skills?icons=${selectedIcons.join(',')}&frame=${frame}&theme=${theme}&itemSize=${itemSize}&iconSize=${iconSize}&perLine=${perLine}&v=2`;
   const absoluteUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${svgUrl}`;
 
   let markdownCode = `![Tech Stack](${absoluteUrl})`;
@@ -113,16 +114,7 @@ export default function SkillBadgeGenerator() {
 
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">2. Choose Theme</h2>
-          <select
-            value={theme}
-            onChange={(e) => setTheme(e.target.value)}
-            className="w-full bg-bg-base border border-border rounded-xl px-4 py-3 focus:outline-none focus:border-brand-500 transition-colors"
-          >
-            <option value="dark">Dark</option>
-            <option value="tokyonight">Tokyo Night</option>
-            <option value="dracula">Dracula</option>
-            <option value="monokai">Monokai</option>
-          </select>
+          <ThemeSelector value={theme} onChange={setTheme} />
         </div>
 
         <div className="pt-4 border-t border-border">
