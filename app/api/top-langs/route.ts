@@ -89,9 +89,20 @@ export async function GET(request: Request) {
         'User-Agent': 'readme-skills-api'
       },
       body: JSON.stringify({ query, variables }),
-      next: { revalidate: 7200 }
+      cache: 'no-store'
     });
-    return res.json();
+    
+    if (!res.ok) {
+      throw new Error(`GitHub API error: ${res.statusText}`);
+    }
+    
+    const json = await res.json();
+    
+    if (json.message) {
+      throw new Error(`GitHub API: ${json.message}`);
+    }
+    
+    return json;
   };
 
   try {
@@ -230,10 +241,11 @@ export async function GET(request: Request) {
         'Cache-Control': process.env.NODE_ENV === 'development' ? 'no-cache, no-store, must-revalidate' : 'public, max-age=7200, s-maxage=86400',
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Top Languages Generation Error:", error);
+    const msg = error.message || "Internal Server Error";
     return new NextResponse(
-      `<svg xmlns="http://www.w3.org/2000/svg" width="350" height="100"><text x="10" y="40" fill="#f00">Internal Server Error</text></svg>`,
+      `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="100"><text x="10" y="40" fill="#f00">Error: ${msg.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</text></svg>`,
       { status: 500, headers: { 'Content-Type': 'image/svg+xml' } }
     );
   }
