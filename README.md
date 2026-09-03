@@ -1,5 +1,7 @@
 # GitHub README Asset Generator (readme-skills-api)
 
+![Readme Skills API - OG Image](/public/og.jpg)
+
 A Next.js based application to generate beautiful, dynamic SVG badges, GitHub contribution streaks, developer stats, and top language cards for your GitHub profile README.
 
 ## Features
@@ -71,7 +73,7 @@ Generates a comprehensive summary card with your GitHub performance and overall 
 
 ### 4. Top Languages Card (`/api/top-langs`)
 
-Generates a visual breakdown of your most used programming languages across public repositories.
+Generates a visual breakdown of your most used programming languages across your repositories (public and private).
 
 **Example Markdown:**
 ```md
@@ -83,6 +85,7 @@ Generates a visual breakdown of your most used programming languages across publ
 - `theme`: Color theme. Options: `dark` (default), `default`, `transparent`, `radical`, `tokyonight`, `dracula`, `monokai`.
 - `langs_count`: Number of top languages to show (default: `6`, max: `12`).
 - `exclude`: Comma-separated languages to exclude (e.g. `html,css,jupyter notebook`).
+- `include_private`: Set to `false` to exclude private repositories from calculation (default: `true`).
 - `hide_border`: Set to `true` to remove border (default: `false`).
 - `hide_title`: Set to `true` to hide the card title (default: `false`).
 
