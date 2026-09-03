@@ -213,8 +213,12 @@ export async function GET(request: Request) {
     const strokeDashoffset = circumference - (progress * circumference);
     const ringColor = currentStreak > 0 ? theme.ring : theme.ringBg;
 
+    const customWidthParam = searchParams.get('width');
+    const displayWidth = customWidthParam ? parseInt(customWidthParam, 10) : 550;
+    const displayHeight = customWidthParam ? (200 * (displayWidth / 550)) : 200;
+
     const svgContent = `
-<svg xmlns="http://www.w3.org/2000/svg" width="550" height="200" viewBox="0 0 550 200">
+<svg xmlns="http://www.w3.org/2000/svg" width="${displayWidth}" height="${displayHeight}" viewBox="0 0 550 200">
   <defs>
     <style>
       .bg { fill: ${theme.background}; stroke: ${hideBorder ? 'none' : theme.border}; stroke-width: ${hideBorder ? '0' : '1px'}; rx: 6px; }

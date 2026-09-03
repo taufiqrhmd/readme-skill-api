@@ -12,6 +12,7 @@ export default function StatsGenerator() {
   const [showIcons, setShowIcons] = useState(true);
   const [hideRank, setHideRank] = useState(false);
   const [hideItems, setHideItems] = useState<string[]>([]);
+  const [customWidth, setCustomWidth] = useState<string>('');
 
   const [copiedMd, setCopiedMd] = useState(false);
   const [copiedHtml, setCopiedHtml] = useState(false);
@@ -29,12 +30,13 @@ export default function StatsGenerator() {
   };
 
   const hideParam = hideItems.length > 0 ? `&hide=${hideItems.join(',')}` : '';
-  const queryParams = `user=${encodeURIComponent(statsUser)}&theme=${theme}&hide_border=${!showBorder}&include_all_commits=${includeAllCommits}&show_icons=${showIcons}&hide_rank=${hideRank}${hideParam}&v=2`;
+  const widthParam = customWidth ? `&width=${customWidth}` : '';
+  const queryParams = `user=${encodeURIComponent(statsUser)}&theme=${theme}&hide_border=${!showBorder}&include_all_commits=${includeAllCommits}&show_icons=${showIcons}&hide_rank=${hideRank}${hideParam}${widthParam}&v=2`;
   const statsSvgUrl = `/api/stats?${queryParams}`;
   const statsAbsoluteUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${statsSvgUrl}`;
 
-  const darkUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/stats?user=${encodeURIComponent(statsUser)}&theme=dark&hide_border=${!showBorder}&include_all_commits=${includeAllCommits}&show_icons=${showIcons}&hide_rank=${hideRank}${hideParam}`;
-  const lightUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/stats?user=${encodeURIComponent(statsUser)}&theme=default&hide_border=${!showBorder}&include_all_commits=${includeAllCommits}&show_icons=${showIcons}&hide_rank=${hideRank}${hideParam}`;
+  const darkUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/stats?user=${encodeURIComponent(statsUser)}&theme=dark&hide_border=${!showBorder}&include_all_commits=${includeAllCommits}&show_icons=${showIcons}&hide_rank=${hideRank}${hideParam}${widthParam}`;
+  const lightUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/stats?user=${encodeURIComponent(statsUser)}&theme=default&hide_border=${!showBorder}&include_all_commits=${includeAllCommits}&show_icons=${showIcons}&hide_rank=${hideRank}${hideParam}${widthParam}`;
 
   const markdownCode = `![${statsUser}'s GitHub Stats](${statsAbsoluteUrl})`;
   const htmlCode = `<a href="https://github.com/${statsUser}">\n  <img src="${statsAbsoluteUrl}" alt="${statsUser}'s GitHub Stats" />\n</a>`;
@@ -162,6 +164,19 @@ export default function StatsGenerator() {
                   </button>
                 ))}
               </div>
+            </div>
+
+            <div className="pt-4 border-t border-border/60 space-y-3">
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium text-text-secondary">Custom Card Width (Optional)</label>
+              </div>
+              <input
+                type="number"
+                placeholder="e.g. 400"
+                value={customWidth}
+                onChange={(e) => setCustomWidth(e.target.value)}
+                className="w-full bg-bg-base border border-border rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-brand-500 transition-colors"
+              />
             </div>
           </div>
         </div>

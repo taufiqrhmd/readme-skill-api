@@ -15,6 +15,8 @@ export default function TopLangsGenerator() {
   const [langsCount, setLangsCount] = useState(6);
   const [exclude, setExclude] = useState('');
 
+  const [customWidth, setCustomWidth] = useState<string>('');
+
   const [copiedMd, setCopiedMd] = useState(false);
   const [copiedHtml, setCopiedHtml] = useState(false);
   const [copiedDual, setCopiedDual] = useState(false);
@@ -32,12 +34,13 @@ export default function TopLangsGenerator() {
   };
 
   const excludeParam = exclude.trim() ? `&exclude=${encodeURIComponent(exclude.trim())}` : '';
-  const queryParams = `user=${encodeURIComponent(langsUser)}&theme=${theme}&hide_border=${!showBorder}&hide_title=${hideTitle}&include_private=${includePrivate}&langs_count=${langsCount}${excludeParam}&v=2`;
+  const widthParam = customWidth ? `&width=${customWidth}` : '';
+  const queryParams = `user=${encodeURIComponent(langsUser)}&theme=${theme}&hide_border=${!showBorder}&hide_title=${hideTitle}&include_private=${includePrivate}&langs_count=${langsCount}${excludeParam}${widthParam}&v=2`;
   const langsSvgUrl = `/api/top-langs?${queryParams}`;
   const langsAbsoluteUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${langsSvgUrl}`;
 
-  const darkUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/top-langs?user=${encodeURIComponent(langsUser)}&theme=dark&hide_border=${!showBorder}&hide_title=${hideTitle}&include_private=${includePrivate}&langs_count=${langsCount}${excludeParam}`;
-  const lightUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/top-langs?user=${encodeURIComponent(langsUser)}&theme=default&hide_border=${!showBorder}&hide_title=${hideTitle}&include_private=${includePrivate}&langs_count=${langsCount}${excludeParam}`;
+  const darkUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/top-langs?user=${encodeURIComponent(langsUser)}&theme=dark&hide_border=${!showBorder}&hide_title=${hideTitle}&include_private=${includePrivate}&langs_count=${langsCount}${excludeParam}${widthParam}`;
+  const lightUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/top-langs?user=${encodeURIComponent(langsUser)}&theme=default&hide_border=${!showBorder}&hide_title=${hideTitle}&include_private=${includePrivate}&langs_count=${langsCount}${excludeParam}${widthParam}`;
 
   const markdownCode = `![Top Languages](${langsAbsoluteUrl})`;
   const htmlCode = `<a href="https://github.com/${langsUser}">\n  <img src="${langsAbsoluteUrl}" alt="Top Languages" />\n</a>`;
@@ -165,6 +168,19 @@ export default function TopLangsGenerator() {
                   );
                 })}
               </div>
+            </div>
+
+            <div className="pt-2 border-t border-border/60 space-y-3">
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium text-text-secondary">Custom Card Width (Optional)</label>
+              </div>
+              <input
+                type="number"
+                placeholder="e.g. 350"
+                value={customWidth}
+                onChange={(e) => setCustomWidth(e.target.value)}
+                className="w-full bg-bg-base border border-border rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-brand-500 transition-colors"
+              />
             </div>
           </div>
         </div>

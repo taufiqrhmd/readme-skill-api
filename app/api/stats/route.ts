@@ -328,8 +328,12 @@ export async function GET(request: Request) {
       </g>
     `;
 
+    const customWidthParam = searchParams.get('width');
+    const displayWidth = customWidthParam ? parseInt(customWidthParam, 10) : cardWidth;
+    const displayHeight = customWidthParam ? (cardHeight * (displayWidth / cardWidth)) : cardHeight;
+
     const svgContent = `
-<svg xmlns="http://www.w3.org/2000/svg" width="${cardWidth}" height="${cardHeight}" viewBox="0 0 ${cardWidth} ${cardHeight}">
+<svg xmlns="http://www.w3.org/2000/svg" width="${displayWidth}" height="${displayHeight}" viewBox="0 0 ${cardWidth} ${cardHeight}">
   <defs>
     <style>
       .bg { fill: ${theme.background}; stroke: ${hideBorder ? 'none' : theme.border}; stroke-width: ${hideBorder ? '0' : '1px'}; rx: 8px; }

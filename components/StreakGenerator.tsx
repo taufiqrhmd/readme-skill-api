@@ -11,14 +11,16 @@ export default function StreakGenerator() {
   const [copiedMd, setCopiedMd] = useState(false);
   const [copiedHtml, setCopiedHtml] = useState(false);
   const [copiedDual, setCopiedDual] = useState(false);
+  const [customWidth, setCustomWidth] = useState<string>('');
   const mdRef = useRef<HTMLTextAreaElement>(null);
   const htmlRef = useRef<HTMLTextAreaElement>(null);
 
-  const streakSvgUrl = `/api/streaks?user=${encodeURIComponent(streakUser)}&theme=${theme}&hide_border=${!showBorder}&v=3`;
+  const widthParam = customWidth ? `&width=${customWidth}` : '';
+  const streakSvgUrl = `/api/streaks?user=${encodeURIComponent(streakUser)}&theme=${theme}&hide_border=${!showBorder}${widthParam}&v=3`;
   const streakAbsoluteUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${streakSvgUrl}`;
 
-  const darkUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/streaks?user=${encodeURIComponent(streakUser)}&theme=dark&hide_border=${!showBorder}`;
-  const lightUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/streaks?user=${encodeURIComponent(streakUser)}&theme=default&hide_border=${!showBorder}`;
+  const darkUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/streaks?user=${encodeURIComponent(streakUser)}&theme=dark&hide_border=${!showBorder}${widthParam}`;
+  const lightUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/streaks?user=${encodeURIComponent(streakUser)}&theme=default&hide_border=${!showBorder}${widthParam}`;
 
   const markdownCode = `![${streakUser}'s GitHub Streaks](${streakAbsoluteUrl})`;
   const htmlCode = `<a href="https://github.com/${streakUser}">\n  <img src="${streakAbsoluteUrl}" alt="${streakUser}'s GitHub Streaks" />\n</a>`;
@@ -82,6 +84,19 @@ export default function StreakGenerator() {
               >
                 <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showBorder ? 'translate-x-6' : 'translate-x-1'}`} />
               </button>
+            </div>
+
+            <div className="pt-2 border-t border-border/60 space-y-3">
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium text-text-secondary">Custom Card Width (Optional)</label>
+              </div>
+              <input
+                type="number"
+                placeholder="e.g. 550"
+                value={customWidth}
+                onChange={(e) => setCustomWidth(e.target.value)}
+                className="w-full bg-bg-base border border-border rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-brand-500 transition-colors"
+              />
             </div>
           </div>
         </div>
