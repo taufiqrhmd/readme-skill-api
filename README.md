@@ -1,6 +1,6 @@
 # GitHub README Asset Generator (readme-skills-api)
 
-![Readme Skills API - OG Image](/public/og.jpg)
+![Readme Skills API - OG Image](/public/image.png)
 
 A Next.js based application to generate beautiful, dynamic SVG badges, GitHub contribution streaks, developer stats, and top language cards for your GitHub profile README.
 
