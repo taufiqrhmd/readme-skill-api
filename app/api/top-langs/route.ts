@@ -68,7 +68,7 @@ export async function GET(request: Request) {
   if (!userParam) {
     return new NextResponse(
       '<svg xmlns="http://www.w3.org/2000/svg" width="350" height="100"><text x="10" y="40" fill="#f00">Please provide user parameter (?user=username)</text></svg>',
-      { status: 400, headers: { 'Content-Type': 'image/svg+xml' } }
+      { status: 200, headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'no-store, max-age=0' } }
     );
   }
 
@@ -76,7 +76,7 @@ export async function GET(request: Request) {
   if (!token) {
     return new NextResponse(
       '<svg xmlns="http://www.w3.org/2000/svg" width="350" height="100"><text x="10" y="40" fill="#f00">Server is missing GITHUB_TOKEN environment variable</text></svg>',
-      { status: 500, headers: { 'Content-Type': 'image/svg+xml' } }
+      { status: 200, headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'no-store, max-age=0' } }
     );
   }
 
@@ -133,7 +133,7 @@ export async function GET(request: Request) {
     if (data.errors || !data.data?.user) {
       return new NextResponse(
         `<svg xmlns="http://www.w3.org/2000/svg" width="350" height="100"><text x="10" y="40" fill="#f00">Error: User '${userParam}' not found</text></svg>`,
-        { status: 404, headers: { 'Content-Type': 'image/svg+xml' } }
+        { status: 200, headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'no-store, max-age=0' } }
       );
     }
 
@@ -246,7 +246,7 @@ export async function GET(request: Request) {
     const msg = error.message || "Internal Server Error";
     return new NextResponse(
       `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="100"><text x="10" y="40" fill="#f00">Error: ${msg.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</text></svg>`,
-      { status: 500, headers: { 'Content-Type': 'image/svg+xml' } }
+      { status: 200, headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'no-store, max-age=0' } }
     );
   }
 }
