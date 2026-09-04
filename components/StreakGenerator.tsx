@@ -119,9 +119,9 @@ export default function StreakGenerator() {
             <span className="text-xs font-normal text-text-secondary px-2 py-1 bg-bg-base rounded-md border border-border">Live</span>
           </h2>
 
-          <div className="bg-bg-base p-8 rounded-2xl border border-border overflow-auto flex justify-center min-h-[200px] items-center">
+          <div className="bg-bg-base p-8 rounded-2xl border border-border overflow-auto flex justify-center min-h-[210px] items-center">
             {streakUser ? (
-              <img src={streakSvgUrl} alt="GitHub Streaks Preview" className="w-full max-w-[550px] h-auto drop-shadow-sm" />
+              <img src={streakSvgUrl} alt="GitHub Streaks Preview" width={450} height={210} className="w-full max-w-[450px] h-auto drop-shadow-sm" style={{ aspectRatio: '450/210' }} />
             ) : (
               <p className="text-sm text-text-secondary">Enter a GitHub username to see the preview.</p>
             )}

@@ -89,7 +89,7 @@ export async function GET(request: Request) {
         'User-Agent': 'readme-skills-api'
       },
       body: JSON.stringify({ query, variables }),
-      cache: 'no-store'
+      next: { revalidate: 3600 }
     });
     
     if (!res.ok) {

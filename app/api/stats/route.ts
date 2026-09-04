@@ -137,7 +137,7 @@ export async function GET(request: Request) {
         'User-Agent': 'readme-skills-api'
       },
       body: JSON.stringify({ query, variables }),
-      cache: 'no-store'
+      next: { revalidate: 3600 }
     });
     
     if (!res.ok) {
@@ -293,7 +293,7 @@ export async function GET(request: Request) {
 
     // Layout dimension calculation
     const lineHeight = 26;
-    const baseHeight = 90 + statsToDisplay.length * lineHeight;
+    const baseHeight = 80 + statsToDisplay.length * lineHeight;
     const cardHeight = Math.max(210, baseHeight);
     const cardWidth = hideRank ? 350 : 450;
 
@@ -304,7 +304,7 @@ export async function GET(request: Request) {
 
     let statsSvgRows = '';
     statsToDisplay.forEach((stat, idx) => {
-      const yPos = 70 + idx * lineHeight;
+      const yPos = 65 + idx * lineHeight;
       const textX = showIcons ? 48 : 25;
       statsSvgRows += `
         <g transform="translate(0, ${yPos})">

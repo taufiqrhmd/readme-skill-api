@@ -60,7 +60,7 @@ export async function GET(request: Request) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ query, variables }),
-      cache: 'no-store'
+      next: { revalidate: 3600 }
     });
     
     if (!res.ok) {
