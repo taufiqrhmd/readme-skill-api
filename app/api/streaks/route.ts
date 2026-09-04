@@ -193,8 +193,14 @@ export async function GET(request: Request) {
     const todayStr = formatShortDate(new Date().toISOString());
     const totalDateStr = `${formatDate(createdAt)} - Present`;
 
+    const startL = longestStreakStart ? new Date(longestStreakStart) : new Date();
+    const endL = longestStreakEnd ? new Date(longestStreakEnd) : new Date();
+    const sameYear = startL.getFullYear() === endL.getFullYear();
+    
     let longestDateStr = longestStreak > 0
-      ? `${formatDate(longestStreakStart)} - ${formatDate(longestStreakEnd)}`
+      ? (sameYear 
+          ? `${formatShortDate(longestStreakStart)} - ${formatDate(longestStreakEnd)}`
+          : `${formatDate(longestStreakStart)} - ${formatDate(longestStreakEnd)}`)
       : 'No Contributions';
 
     let currentDateStr = currentStreak > 0
@@ -216,11 +222,12 @@ export async function GET(request: Request) {
     const customWidthParam = searchParams.get('width');
     const customHeightParam = searchParams.get('height');
     
-    const displayWidth = customWidthParam ? parseInt(customWidthParam, 10) : 450;
-    const displayHeight = customHeightParam ? parseInt(customHeightParam, 10) : (customWidthParam ? (210 * (displayWidth / 450)) : 210);
+    const cardWidth = 425;
+    const displayWidth = customWidthParam ? parseInt(customWidthParam, 10) : cardWidth;
+    const displayHeight = customHeightParam ? parseInt(customHeightParam, 10) : (customWidthParam ? (210 * (displayWidth / cardWidth)) : 210);
 
     const svgContent = `
-<svg xmlns="http://www.w3.org/2000/svg" width="${displayWidth}" height="${displayHeight}" viewBox="0 0 450 210">
+<svg xmlns="http://www.w3.org/2000/svg" width="${displayWidth}" height="${displayHeight}" viewBox="0 0 ${cardWidth} 210">
   <defs>
     <style>
       .bg { fill: ${theme.background}; stroke: ${hideBorder ? 'none' : theme.border}; stroke-width: ${hideBorder ? '0' : '1px'}; rx: 6px; }
@@ -228,7 +235,7 @@ export async function GET(request: Request) {
       .text-title-middle { font: 700 14px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${theme.currStreakLabel}; text-anchor: middle; }
       .text-stat { font: 700 32px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${theme.sideNums}; text-anchor: middle; }
       .text-stat-middle { font: 700 26px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${theme.currStreakNum}; text-anchor: middle; }
-      .text-date-small { font: 400 12px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${theme.dates}; text-anchor: middle; }
+      .text-date-small { font: 400 11.5px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${theme.dates}; text-anchor: middle; }
       .line { stroke: ${theme.stroke}; stroke-width: 1.5; }
       .ring-bg { fill: none; stroke: ${theme.ring}; stroke-width: 5; }
       .ring-progress { fill: none; stroke: ${theme.ring}; stroke-width: 5; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 1s ease-in-out; }
@@ -244,7 +251,7 @@ export async function GET(request: Request) {
   
   <!-- Vertical Dividers -->
   <line x1="150" y1="35" x2="150" y2="175" class="line" />
-  <line x1="300" y1="35" x2="300" y2="175" class="line" />
+  <line x1="275" y1="35" x2="275" y2="175" class="line" />
 
   <!-- LEFT COLUMN: Total Contributions -->
   <g transform="translate(75, 80)">
@@ -254,7 +261,7 @@ export async function GET(request: Request) {
   </g>
   
   <!-- MIDDLE COLUMN: Current Streak -->
-  <g transform="translate(225, 75)">
+  <g transform="translate(212.5, 75)">
     <!-- Progress Ring -->
     <circle cx="0" cy="0" r="${radius}" class="ring-bg" mask="url(#ring-mask)" />
     <circle cx="0" cy="0" r="${radius}" class="ring-progress" mask="url(#ring-mask)" stroke-dasharray="${circumference}" stroke-dashoffset="${strokeDashoffset}" />
@@ -270,7 +277,7 @@ export async function GET(request: Request) {
   </g>
   
   <!-- RIGHT COLUMN: Longest Streak -->
-  <g transform="translate(375, 80)">
+  <g transform="translate(350, 80)">
     <text x="0" y="0" class="text-stat">${longestStreak}</text>
     <text x="0" y="32" class="text-title">Longest Streak</text>
     <text x="0" y="60" class="text-date-small">${longestDateStr}</text>

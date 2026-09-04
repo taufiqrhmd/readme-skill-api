@@ -295,7 +295,7 @@ export async function GET(request: Request) {
     const lineHeight = 26;
     const baseHeight = 80 + statsToDisplay.length * lineHeight;
     const cardHeight = Math.max(210, baseHeight);
-    const cardWidth = hideRank ? 350 : 450;
+    const cardWidth = hideRank ? 330 : 425; // Smaller footprint for side-by-side
 
     // Rank Circle progress math
     const radius = 38;
@@ -314,13 +314,14 @@ export async function GET(request: Request) {
             </svg>
           ` : ''}
           <text x="${textX}" y="0" class="stat-label">${stat.label}:</text>
-          <text x="${hideRank ? cardWidth - 25 : 250}" y="0" class="stat-value" text-anchor="end">${stat.value}</text>
+          <text x="${hideRank ? cardWidth - 25 : 230}" y="0" class="stat-value" text-anchor="end">${stat.value}</text>
         </g>
       `;
     });
 
+    const rankX = cardWidth - 85;
     const rankSvg = hideRank ? '' : `
-      <g transform="translate(365, ${cardHeight / 2 + 5})">
+      <g transform="translate(${rankX}, ${cardHeight / 2 + 5})">
         <circle cx="0" cy="0" r="${radius}" class="ring-bg" />
         <circle cx="0" cy="0" r="${radius}" class="ring-progress" stroke-dasharray="${circumference}" stroke-dashoffset="${strokeDashoffset}" />
         <text x="0" y="8" class="rank-text">${rankInfo.level}</text>
