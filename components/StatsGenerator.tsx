@@ -31,7 +31,7 @@ export default function StatsGenerator() {
 
   const hideParam = hideItems.length > 0 ? `&hide=${hideItems.join(',')}` : '';
   const widthParam = customWidth ? `&width=${customWidth}` : '';
-  const queryParams = `user=${encodeURIComponent(statsUser)}&theme=${theme}&hide_border=${!showBorder}&include_all_commits=${includeAllCommits}&show_icons=${showIcons}&hide_rank=${hideRank}${hideParam}${widthParam}&v=2`;
+  const queryParams = `user=${encodeURIComponent(statsUser)}&theme=${theme}&hide_border=${!showBorder}&include_all_commits=${includeAllCommits}&show_icons=${showIcons}&hide_rank=${hideRank}${hideParam}${widthParam}&v=3`;
   const statsSvgUrl = `/api/stats?${queryParams}`;
   const statsAbsoluteUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${statsSvgUrl}`;
 

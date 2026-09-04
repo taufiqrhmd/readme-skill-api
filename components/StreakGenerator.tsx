@@ -16,7 +16,7 @@ export default function StreakGenerator() {
   const htmlRef = useRef<HTMLTextAreaElement>(null);
 
   const widthParam = customWidth ? `&width=${customWidth}` : '';
-  const streakSvgUrl = `/api/streaks?user=${encodeURIComponent(streakUser)}&theme=${theme}&hide_border=${!showBorder}${widthParam}&v=3`;
+  const streakSvgUrl = `/api/streaks?user=${encodeURIComponent(streakUser)}&theme=${theme}&hide_border=${!showBorder}${widthParam}&v=4`;
   const streakAbsoluteUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${streakSvgUrl}`;
 
   const darkUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/streaks?user=${encodeURIComponent(streakUser)}&theme=dark&hide_border=${!showBorder}${widthParam}`;
