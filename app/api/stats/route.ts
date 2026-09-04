@@ -294,8 +294,8 @@ export async function GET(request: Request) {
     // Layout dimension calculation
     const lineHeight = 26;
     const baseHeight = 90 + statsToDisplay.length * lineHeight;
-    const cardHeight = Math.max(195, baseHeight);
-    const cardWidth = hideRank ? 350 : 495;
+    const cardHeight = Math.max(210, baseHeight);
+    const cardWidth = hideRank ? 350 : 450;
 
     // Rank Circle progress math
     const radius = 38;
@@ -314,13 +314,13 @@ export async function GET(request: Request) {
             </svg>
           ` : ''}
           <text x="${textX}" y="0" class="stat-label">${stat.label}:</text>
-          <text x="${hideRank ? cardWidth - 25 : 300}" y="0" class="stat-value" text-anchor="end">${stat.value}</text>
+          <text x="${hideRank ? cardWidth - 25 : 250}" y="0" class="stat-value" text-anchor="end">${stat.value}</text>
         </g>
       `;
     });
 
     const rankSvg = hideRank ? '' : `
-      <g transform="translate(395, ${cardHeight / 2 + 5})">
+      <g transform="translate(365, ${cardHeight / 2 + 5})">
         <circle cx="0" cy="0" r="${radius}" class="ring-bg" />
         <circle cx="0" cy="0" r="${radius}" class="ring-progress" stroke-dasharray="${circumference}" stroke-dashoffset="${strokeDashoffset}" />
         <text x="0" y="8" class="rank-text">${rankInfo.level}</text>
@@ -329,8 +329,10 @@ export async function GET(request: Request) {
     `;
 
     const customWidthParam = searchParams.get('width');
+    const customHeightParam = searchParams.get('height');
+    
     const displayWidth = customWidthParam ? parseInt(customWidthParam, 10) : cardWidth;
-    const displayHeight = customWidthParam ? (cardHeight * (displayWidth / cardWidth)) : cardHeight;
+    const displayHeight = customHeightParam ? parseInt(customHeightParam, 10) : (customWidthParam ? (cardHeight * (displayWidth / cardWidth)) : cardHeight);
 
     const svgContent = `
 <svg xmlns="http://www.w3.org/2000/svg" width="${displayWidth}" height="${displayHeight}" viewBox="0 0 ${cardWidth} ${cardHeight}">

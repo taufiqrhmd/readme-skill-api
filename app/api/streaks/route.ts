@@ -214,11 +214,13 @@ export async function GET(request: Request) {
     const ringColor = currentStreak > 0 ? theme.ring : theme.ringBg;
 
     const customWidthParam = searchParams.get('width');
-    const displayWidth = customWidthParam ? parseInt(customWidthParam, 10) : 550;
-    const displayHeight = customWidthParam ? (200 * (displayWidth / 550)) : 200;
+    const customHeightParam = searchParams.get('height');
+    
+    const displayWidth = customWidthParam ? parseInt(customWidthParam, 10) : 450;
+    const displayHeight = customHeightParam ? parseInt(customHeightParam, 10) : (customWidthParam ? (210 * (displayWidth / 450)) : 210);
 
     const svgContent = `
-<svg xmlns="http://www.w3.org/2000/svg" width="${displayWidth}" height="${displayHeight}" viewBox="0 0 550 200">
+<svg xmlns="http://www.w3.org/2000/svg" width="${displayWidth}" height="${displayHeight}" viewBox="0 0 450 210">
   <defs>
     <style>
       .bg { fill: ${theme.background}; stroke: ${hideBorder ? 'none' : theme.border}; stroke-width: ${hideBorder ? '0' : '1px'}; rx: 6px; }
@@ -241,18 +243,18 @@ export async function GET(request: Request) {
   <rect x="0" y="0" width="100%" height="100%" class="bg" />
   
   <!-- Vertical Dividers -->
-  <line x1="183" y1="35" x2="183" y2="165" class="line" />
-  <line x1="366" y1="35" x2="366" y2="165" class="line" />
+  <line x1="150" y1="35" x2="150" y2="175" class="line" />
+  <line x1="300" y1="35" x2="300" y2="175" class="line" />
 
   <!-- LEFT COLUMN: Total Contributions -->
-  <g transform="translate(91, 80)">
+  <g transform="translate(75, 80)">
     <text x="0" y="0" class="text-stat">${totalLifetimeContributions}</text>
     <text x="0" y="32" class="text-title">Total Contributions</text>
     <text x="0" y="60" class="text-date-small">${totalDateStr}</text>
   </g>
   
   <!-- MIDDLE COLUMN: Current Streak -->
-  <g transform="translate(275, 75)">
+  <g transform="translate(225, 75)">
     <!-- Progress Ring -->
     <circle cx="0" cy="0" r="${radius}" class="ring-bg" mask="url(#ring-mask)" />
     <circle cx="0" cy="0" r="${radius}" class="ring-progress" mask="url(#ring-mask)" stroke-dasharray="${circumference}" stroke-dashoffset="${strokeDashoffset}" />
@@ -268,7 +270,7 @@ export async function GET(request: Request) {
   </g>
   
   <!-- RIGHT COLUMN: Longest Streak -->
-  <g transform="translate(458, 80)">
+  <g transform="translate(375, 80)">
     <text x="0" y="0" class="text-stat">${longestStreak}</text>
     <text x="0" y="32" class="text-title">Longest Streak</text>
     <text x="0" y="60" class="text-date-small">${longestDateStr}</text>
