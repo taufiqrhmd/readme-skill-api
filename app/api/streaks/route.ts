@@ -224,10 +224,10 @@ export async function GET(request: Request) {
     
     const cardWidth = 425;
     const displayWidth = customWidthParam ? parseInt(customWidthParam, 10) : cardWidth;
-    const displayHeight = customHeightParam ? parseInt(customHeightParam, 10) : (customWidthParam ? (210 * (displayWidth / cardWidth)) : 210);
+    const displayHeight = customHeightParam ? parseInt(customHeightParam, 10) : (customWidthParam ? (200 * (displayWidth / cardWidth)) : 200);
 
     const svgContent = `
-<svg xmlns="http://www.w3.org/2000/svg" width="${displayWidth}" height="${displayHeight}" viewBox="0 0 ${cardWidth} 210">
+<svg xmlns="http://www.w3.org/2000/svg" width="${displayWidth}" height="${displayHeight}" viewBox="0 0 ${cardWidth} 200">
   <defs>
     <style>
       .bg { fill: ${theme.background}; stroke: ${hideBorder ? 'none' : theme.border}; stroke-width: ${hideBorder ? '0' : '1px'}; rx: 6px; }

@@ -202,7 +202,6 @@ export async function GET(request: Request) {
 
     // 2. Contributions & Commits calculation
     let totalCommits = 0;
-    let totalContributions = 0;
     let lifetimePRContributions = 0;
     let lifetimeIssueContributions = 0;
 
@@ -220,9 +219,6 @@ export async function GET(request: Request) {
             restrictedContributionsCount
             totalPullRequestContributions
             totalIssueContributions
-            contributionCalendar {
-              totalContributions
-            }
           }
         `;
       }
@@ -236,7 +232,6 @@ export async function GET(request: Request) {
             totalCommits += (coll.totalCommitContributions || 0) + (coll.restrictedContributionsCount || 0);
             lifetimePRContributions += (coll.totalPullRequestContributions || 0);
             lifetimeIssueContributions += (coll.totalIssueContributions || 0);
-            totalContributions += (coll.contributionCalendar?.totalContributions || 0);
           }
         }
       }
@@ -249,9 +244,6 @@ export async function GET(request: Request) {
               restrictedContributionsCount
               totalPullRequestContributions
               totalIssueContributions
-              contributionCalendar {
-                totalContributions
-              }
             }
           }
         }
@@ -262,7 +254,6 @@ export async function GET(request: Request) {
         totalCommits = (coll.totalCommitContributions || 0) + (coll.restrictedContributionsCount || 0);
         lifetimePRContributions = coll.totalPullRequestContributions || 0;
         lifetimeIssueContributions = coll.totalIssueContributions || 0;
-        totalContributions = coll.contributionCalendar?.totalContributions || 0;
       }
     }
 
@@ -281,7 +272,6 @@ export async function GET(request: Request) {
     // 4. Prepare display rows
     const allStats = [
       { id: 'stars', label: 'Total Stars Earned', value: formatNumber(totalStars), iconPath: 'M8 1.75a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 13.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 7.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327 2.17A.75.75 0 0 1 8 1.75Z' },
-      { id: 'contributions', label: includeAllCommits ? 'Total Contributions' : 'Contributions (Past Year)', value: formatNumber(totalContributions), iconPath: 'M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15' },
       { id: 'commits', label: includeAllCommits ? 'Total Commits' : 'Commits (Past Year)', value: formatNumber(totalCommits), iconPath: 'M11.93 8.5a4.002 4.002 0 0 1-7.86 0H.75a.75.75 0 0 1 0-1.5h3.32a4.002 4.002 0 0 1 7.86 0h3.32a.75.75 0 0 1 0 1.5Zm-1.43-.75a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z' },
       { id: 'prs', label: 'Total PRs', value: formatNumber(totalPRs), iconPath: 'M7.177 3.073L9.573.677A.25.25 0 0 1 10 .854v4.792a.25.25 0 0 1-.427.177L7.177 3.427a.25.25 0 0 1 0-.354zM3.75 2.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5zm-2.25.75a2.25 2.25 0 1 1 3 2.122v5.256a2.251 2.251 0 1 1-1.5 0V5.372A2.25 2.25 0 0 1 1.5 3.25zM11 2.5h-1V4h1a1 1 0 0 1 1 1v5.628a2.251 2.251 0 1 0 1.5 0V5A2.5 2.5 0 0 0 11 2.5zm1 10.25a.75.75 0 1 1 1.5 0 .75.75 0 0 1-1.5 0zM3.75 12a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5z' },
       { id: 'issues', label: 'Total Issues', value: formatNumber(totalIssues), iconPath: 'M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm9 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-.25-6.25a.75.75 0 0 0-1.5 0v3.5a.75.75 0 0 0 1.5 0v-3.5z' },
@@ -293,9 +283,8 @@ export async function GET(request: Request) {
 
     // Layout dimension calculation
     const lineHeight = 26;
-    const baseHeight = 80 + statsToDisplay.length * lineHeight;
-    const cardHeight = Math.max(210, baseHeight);
-    const cardWidth = hideRank ? 330 : 425; // Smaller footprint for side-by-side
+    const cardHeight = 200;
+    const cardWidth = hideRank ? 330 : 405; // Smaller footprint for side-by-side
 
     // Rank Circle progress math
     const radius = 38;
@@ -325,7 +314,6 @@ export async function GET(request: Request) {
         <circle cx="0" cy="0" r="${radius}" class="ring-bg" />
         <circle cx="0" cy="0" r="${radius}" class="ring-progress" stroke-dasharray="${circumference}" stroke-dashoffset="${strokeDashoffset}" />
         <text x="0" y="8" class="rank-text">${rankInfo.level}</text>
-        <text x="0" y="${radius + 18}" class="rank-subtext">Overall Rank</text>
       </g>
     `;
 
@@ -346,7 +334,6 @@ export async function GET(request: Request) {
       .ring-bg { fill: none; stroke: ${theme.border}; stroke-width: 5; opacity: 0.4; }
       .ring-progress { fill: none; stroke: ${theme.ring}; stroke-width: 5.5; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 0 0; }
       .rank-text { font: 800 24px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${theme.rank}; text-anchor: middle; }
-      .rank-subtext { font: 500 11px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${theme.text}; opacity: 0.8; text-anchor: middle; }
     </style>
   </defs>
 

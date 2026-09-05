@@ -31,7 +31,7 @@ export default function StatsGenerator() {
 
   const hideParam = hideItems.length > 0 ? `&hide=${hideItems.join(',')}` : '';
   const widthParam = customWidth ? `&width=${customWidth}` : '';
-  const queryParams = `user=${encodeURIComponent(statsUser)}&theme=${theme}&hide_border=${!showBorder}&include_all_commits=${includeAllCommits}&show_icons=${showIcons}&hide_rank=${hideRank}${hideParam}${widthParam}&v=3`;
+  const queryParams = `user=${encodeURIComponent(statsUser)}&theme=${theme}&hide_border=${!showBorder}&include_all_commits=${includeAllCommits}&show_icons=${showIcons}&hide_rank=${hideRank}${hideParam}${widthParam}&v=4`;
   const statsSvgUrl = `/api/stats?${queryParams}`;
   const statsAbsoluteUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${statsSvgUrl}`;
 
@@ -145,7 +145,6 @@ export default function StatsGenerator() {
               <div className="flex flex-wrap gap-2.5 pt-1">
                 {[
                   { id: 'stars', label: 'Stars' },
-                  { id: 'contributions', label: 'Total Contributions' },
                   { id: 'commits', label: 'Commits' },
                   { id: 'prs', label: 'PRs' },
                   { id: 'issues', label: 'Issues' },
@@ -201,7 +200,7 @@ export default function StatsGenerator() {
 
           <div className="bg-bg-base p-8 rounded-2xl border border-border overflow-auto flex justify-center min-h-[210px] items-center">
             {statsUser ? (
-              <img src={statsSvgUrl} alt="GitHub Stats Preview" width={425} height={210} className="w-full max-w-[425px] h-auto drop-shadow-sm" style={{ aspectRatio: '425/210' }} />
+              <img src={statsSvgUrl} alt="GitHub Stats Preview" width={405} height={200} className="w-full max-w-[405px] h-auto drop-shadow-sm" style={{ aspectRatio: '405/200' }} />
             ) : (
               <p className="text-sm text-text-secondary">Enter a GitHub username to see the preview.</p>
             )}

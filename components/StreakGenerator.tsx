@@ -16,7 +16,7 @@ export default function StreakGenerator() {
   const htmlRef = useRef<HTMLTextAreaElement>(null);
 
   const widthParam = customWidth ? `&width=${customWidth}` : '';
-  const streakSvgUrl = `/api/streaks?user=${encodeURIComponent(streakUser)}&theme=${theme}&hide_border=${!showBorder}${widthParam}&v=4`;
+  const streakSvgUrl = `/api/streaks?user=${encodeURIComponent(streakUser)}&theme=${theme}&hide_border=${!showBorder}${widthParam}&v=5`;
   const streakAbsoluteUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${streakSvgUrl}`;
 
   const darkUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/streaks?user=${encodeURIComponent(streakUser)}&theme=dark&hide_border=${!showBorder}${widthParam}`;
@@ -119,9 +119,9 @@ export default function StreakGenerator() {
             <span className="text-xs font-normal text-text-secondary px-2 py-1 bg-bg-base rounded-md border border-border">Live</span>
           </h2>
 
-          <div className="bg-bg-base p-8 rounded-2xl border border-border overflow-auto flex justify-center min-h-[210px] items-center">
+          <div className="bg-bg-base p-8 rounded-2xl border border-border overflow-auto flex justify-center min-h-[200px] items-center">
             {streakUser ? (
-              <img src={streakSvgUrl} alt="GitHub Streaks Preview" width={425} height={210} className="w-full max-w-[425px] h-auto drop-shadow-sm" style={{ aspectRatio: '425/210' }} />
+              <img src={streakSvgUrl} alt="GitHub Streaks Preview" width={425} height={200} className="w-full max-w-[425px] h-auto drop-shadow-sm" style={{ aspectRatio: '425/200' }} />
             ) : (
               <p className="text-sm text-text-secondary">Enter a GitHub username to see the preview.</p>
             )}
