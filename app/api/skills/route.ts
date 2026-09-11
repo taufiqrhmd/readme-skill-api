@@ -53,8 +53,9 @@ export async function GET(request: Request) {
   let height = numRows * itemSize + (numRows - 1) * gap;
 
   if (frame === 'hexagon') {
+    const hexWidth = itemSize * (Math.sqrt(3) / 2);
     // Honeycomb pattern adds horizontal offset for alternate rows
-    width = numCols * itemSize + (numCols - 1) * gap + (numRows > 1 ? (itemSize + gap) / 2 : 0);
+    width = numCols * hexWidth + (numCols - 1) * gap + (numRows > 1 ? (hexWidth + gap) / 2 : 0);
     height = itemSize + (numRows - 1) * ((itemSize * 0.75) + gap);
   }
 
@@ -101,10 +102,13 @@ export async function GET(request: Request) {
 
     let x = col * (itemSize + gap);
     let y = row * (itemSize + gap);
+    let currentItemWidth = itemSize;
 
     if (frame === 'hexagon') {
-      const rowOffset = (row % 2 === 1) ? (itemSize + gap) / 2 : 0;
-      x = col * (itemSize + gap) + rowOffset;
+      const hexWidth = itemSize * (Math.sqrt(3) / 2);
+      currentItemWidth = hexWidth;
+      const rowOffset = (row % 2 === 1) ? (hexWidth + gap) / 2 : 0;
+      x = col * (hexWidth + gap) + rowOffset;
       y = row * ((itemSize * 0.75) + gap);
     }
 
@@ -128,7 +132,9 @@ export async function GET(request: Request) {
 
     // Draw Frame
     if (frame === 'hexagon') {
-      svgContent += `<polygon points="${half},0 ${itemSize},${quarter} ${itemSize},${threeQuarter} ${half},${itemSize} 0,${threeQuarter} 0,${quarter}" class="icon-bg" />`;
+      const hexWidth = itemSize * (Math.sqrt(3) / 2);
+      const hw = hexWidth / 2;
+      svgContent += `<polygon points="${hw},0 ${hexWidth},${quarter} ${hexWidth},${threeQuarter} ${hw},${itemSize} 0,${threeQuarter} 0,${quarter}" class="icon-bg" />`;
     } else if (frame === 'circle') {
       svgContent += `<circle cx="${half}" cy="${half}" r="${half}" class="icon-bg" />`;
     } else {
@@ -153,7 +159,9 @@ export async function GET(request: Request) {
     iconSvg = iconSvg.replace(/<svg([^>]*)>/i, (_match: string, p1: string) => {
       let attrs = p1.replace(/\bwidth\s*=\s*["'][^"']*["']/ig, '')
                     .replace(/\bheight\s*=\s*["'][^"']*["']/ig, '');
-      return `<svg x="${padding}" y="${padding}" width="${iconSize}" height="${iconSize}"${attrs}>`;
+      let offsetX = (currentItemWidth - iconSize) / 2;
+      let offsetY = (itemSize - iconSize) / 2;
+      return `<svg x="${offsetX}" y="${offsetY}" width="${iconSize}" height="${iconSize}"${attrs}>`;
     });
     
     svgContent += iconSvg;
@@ -166,7 +174,9 @@ export async function GET(request: Request) {
   return new NextResponse(svgContent, {
     headers: {
       'Content-Type': 'image/svg+xml',
-      'Cache-Control': 'public, max-age=604800, stale-while-revalidate=86400',
+      'Cache-Control': process.env.NODE_ENV === 'development' 
+        ? 'no-store, no-cache, must-revalidate, proxy-revalidate' 
+        : 'public, max-age=604800, stale-while-revalidate=86400',
     },
   });
 }

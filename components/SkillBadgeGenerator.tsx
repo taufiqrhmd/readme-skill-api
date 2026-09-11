@@ -44,7 +44,7 @@ export default function SkillBadgeGenerator() {
   const mdRef = useRef<HTMLTextAreaElement>(null);
   const htmlRef = useRef<HTMLTextAreaElement>(null);
 
-  const svgUrl = `/api/skills?icons=${selectedIcons.join(',')}&frame=${frame}&theme=${theme}&itemSize=${itemSize}&iconSize=${iconSize}&perLine=${perLine}&v=2`;
+  const svgUrl = `/api/skills?icons=${selectedIcons.join(',')}&frame=${frame}&theme=${theme}&itemSize=${itemSize}&iconSize=${iconSize}&perLine=${perLine}&v=3`;
   const absoluteUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${svgUrl}`;
 
   let markdownCode = `![Tech Stack](${absoluteUrl})`;

@@ -12,7 +12,7 @@ A Next.js based application to generate beautiful, dynamic SVG badges, GitHub co
 - **Top Languages**: Visual breakdown of your most used programming languages with official GitHub colors and multi-segment progress bar.
 - **Dynamic SVGs**: Fast, on-the-fly SVG generation with HTTP caching that can be embedded directly in markdown or HTML.
 - **Dual-Theme Ready**: Ready for GitHub's light/dark mode auto-switching with `<picture>` tags.
-- **Themes**: Multiple developer-favorite themes (`dark`, `default`, `tokyonight`, `dracula`, `monokai`, `radical`, `transparent`).
+- **Themes**: Multiple developer-favorite themes (`dark`, `light` (default), `tokyonight`, `dracula`, `monokai`, `radical`, `transparent`).
 
 ## Endpoints & Usage
 
@@ -28,7 +28,7 @@ Generates a grid of icons based on the provided parameters.
 **Parameters:**
 - `icons` (required): Comma-separated list of icon slugs (e.g., `react,nodedotjs,python`).
 - `frame`: The shape of the icon background. Options: `rounded` (default), `circle`, `hexagon`.
-- `theme`: Color theme. Options: `dark` (default), `tokyonight`, `dracula`, `monokai`.
+- `theme`: Color theme. Options: `dark`, `light` (default), `tokyonight`, `dracula`, `monokai`.
 - `perLine`: Number of icons per row (default: `10`).
 - `itemSize`: Total size of the icon container (default: `48`).
 - `iconSize`: Size of the actual icon inside the container (default: `30`).
@@ -46,7 +46,7 @@ Generates a card displaying your GitHub contribution statistics.
 
 **Parameters:**
 - `user` (required): Your GitHub username.
-- `theme`: Color theme. Options: `default`, `dark` (default), `transparent`, `radical`, `tokyonight`, `dracula`, `monokai`.
+- `theme`: Color theme. Options: `dark`, `light` (default), `transparent`, `radical`, `tokyonight`, `dracula`, `monokai`.
 - `hide_border`: Set to `true` to remove the outer border (default: `false`).
 
 ---
@@ -62,7 +62,7 @@ Generates a comprehensive summary card with your GitHub performance and overall 
 
 **Parameters:**
 - `user` (required): Your GitHub username.
-- `theme`: Color theme. Options: `dark` (default), `default`, `transparent`, `radical`, `tokyonight`, `dracula`, `monokai`.
+- `theme`: Color theme. Options: `dark`, `light` (default), `transparent`, `radical`, `tokyonight`, `dracula`, `monokai`.
 - `hide_border`: Set to `true` to remove outer border (default: `false`).
 - `include_all_commits`: Set to `false` to show past year commits instead of lifetime (default: `true`).
 - `show_icons`: Show/hide SVG icons next to stat labels (default: `true`).
@@ -82,7 +82,7 @@ Generates a visual breakdown of your most used programming languages across your
 
 **Parameters:**
 - `user` (required): Your GitHub username.
-- `theme`: Color theme. Options: `dark` (default), `default`, `transparent`, `radical`, `tokyonight`, `dracula`, `monokai`.
+- `theme`: Color theme. Options: `dark`, `light` (default), `transparent`, `radical`, `tokyonight`, `dracula`, `monokai`.
 - `langs_count`: Number of top languages to show (default: `6`, max: `12`).
 - `exclude`: Comma-separated languages to exclude (e.g. `html,css,jupyter notebook`).
 - `include_private`: Set to `false` to exclude private repositories from calculation (default: `true`).
