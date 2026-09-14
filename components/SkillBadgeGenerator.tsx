@@ -44,7 +44,7 @@ export default function SkillBadgeGenerator() {
   const mdRef = useRef<HTMLTextAreaElement>(null);
   const htmlRef = useRef<HTMLTextAreaElement>(null);
 
-  const svgUrl = `/api/skills?icons=${selectedIcons.join(',')}&frame=${frame}&theme=${theme}&itemSize=${itemSize}&iconSize=${iconSize}&perLine=${perLine}&v=3`;
+  const svgUrl = `/api/skills?icons=${selectedIcons.join(',')}&frame=${frame}&theme=${theme}&itemSize=${itemSize}&iconSize=${iconSize}&perLine=${perLine}&v=7`;
   const absoluteUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${svgUrl}`;
 
   let markdownCode = `![Tech Stack](${absoluteUrl})`;
@@ -164,7 +164,9 @@ export default function SkillBadgeGenerator() {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="font-medium">Icons Per Line</span>
-                <span className="text-text-secondary">{perLine}</span>
+                <span className="text-text-secondary">
+                  {perLine} {frame === 'hexagon' ? `(${perLine} / ${Math.max(1, perLine - 1)} honeycomb)` : ''}
+                </span>
               </div>
               <input type="range" min="3" max="20" value={perLine} onChange={(e) => setPerLine(Number(e.target.value))} className="w-full accent-brand-500" />
             </div>
