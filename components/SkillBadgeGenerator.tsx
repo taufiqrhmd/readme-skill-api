@@ -5,12 +5,15 @@ import { Hexagon, Circle, Square, Copy, Check, Plus, AlignLeft, AlignCenter, Ali
 import ThemeSelector from '@/components/ThemeSelector';
 
 const POPULAR_SKILLS = [
-  'react', 'nodejs', 'vue', 'javascript', 'typescript', 'html5', 'css',
-  'python', 'cplusplus', 'go', 'rust', 'docker', 'kubernetes', 'laravel', 'android',
-  'google-cloud', 'vercel', 'nextjs', 'tailwindcss', 'figma',
-  'git', 'github', 'postgresql', 'mongodb', 'mysql', 'redis', 'linux', 'php',
-  'kotlin', 'swift', 'dart', 'flutter', 'ruby', 'elixir', 'nginx',
-  'scala', 'svelte', 'astro', 'nuxt', 'supabase', 'discord'
+  'android', 'angularjs', 'archlinux', 'arduino', 'astro', 'bun',
+  'claude-ai', 'claude-code', 'cloudflare', 'cplusplus', 'css',
+  'dart', 'discord', 'docker', 'elixir', 'figma', 'firebase', 'flutter',
+  'git', 'github', 'go', 'google-antigravity', 'google-cloud', 'html5',
+  'javascript', 'kotlin', 'kubernetes', 'laravel', 'linux',
+  'mongodb', 'mysql', 'nextjs', 'nginx', 'nodejs', 'notion', 'nuxt',
+  'openai', 'php', 'postgresql', 'python', 'react', 'redis', 'ruby', 'rust', 'scala',
+  'supabase', 'svelte', 'swift', 'tailwindcss', 'typescript',
+  'vercel', 'vue', 'xampp'
 ];
 
 type FrameType = 'hexagon' | 'circle' | 'rounded';
