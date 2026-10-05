@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "GitHub README Asset Generator | Badges & Streaks",
     description: "Create beautiful, dynamic SVG tech stack badges and contribution streaks for your GitHub README profile.",
     siteName: "GitHub README Asset Generator",
-    url: "https://readme-skill-api.vercel.app/",
+    url: "https://githubreadme.miracle.web.id/",
     images: [
       {
         url: "/image.png",
